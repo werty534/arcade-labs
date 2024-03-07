@@ -15,6 +15,8 @@ class Cabeza_Raúl:
 
     def update(self):
         self.posy += self.vel
+    def getPosy(self):
+        return self.posy
 
 class Ball:
     def __init__(self, position_x, position_y):
@@ -31,11 +33,11 @@ class Ball:
     def draw(self):
         """ Draw the balls with the instance variables we have. """
         arcade.draw_circle_filled(self.position_x, self.position_y,10, arcade.color.BLUE)
-    def update(self):
+    def update(self, pos1, pos2):
         self.nueva_x = self.position_x + self.velx
         self.nueva_y = self.position_y + self.vely
 
-        if self.nueva_x >= SCREEN_WIDTH - 10 or self.nueva_x <= 10:
+        if self.nueva_x >= 600 and (pos1 + 100 >= self.nueva_y >= pos1 - 100) or self.nueva_x <= 40 and (pos2 + 100 >= self.nueva_y >= pos2 - 100):
             self.velx *= -1
             self.nueva_x = self.position_x + self.velx
         if self.nueva_y >= SCREEN_HEIGHT - 10 or self.nueva_y <= 10:
@@ -44,6 +46,7 @@ class Ball:
 
         self.position_x = self.nueva_x
         self.position_y = self.nueva_y
+
 
 
 class MyGame(arcade.Window):
@@ -72,7 +75,10 @@ class MyGame(arcade.Window):
         self.p2.draw()
 
     def update(self, delta_time):
-        self.ball.update()
+        pos1 = self.p1.getPosy()
+        pos2 = self.p2.getPosy()
+        print(pos1, pos2)
+        self.ball.update(pos1, pos2)
         self.p1.update()
         self.p2.update()
 
